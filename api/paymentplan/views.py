@@ -1,13 +1,14 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from sql.models import PaymentPlan
 from .serializers import PaymentPlanSerializer
+from rest_framework.decorators import action
 
 class PaymentPlanViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    queryset = PaymentPlan.objects.all()
     serializer_class = PaymentPlanSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return PaymentPlan.objects.filter(user=self.request.user).order_by('-created_at')

@@ -39,10 +39,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         transaction = serializer.save()
-        response_serializer = TransactionCreateResponseSerializer(
-            transaction,
-            context=self.get_serializer_context(),
-        )
+        response_serializer = TransactionCreateResponseSerializer(transaction,context=self.get_serializer_context(),)
         headers = self.get_success_headers(response_serializer.data)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -73,10 +70,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
             
             trans.save()
             
-        response_serializer = TransactionRespondResponseSerializer(
-            trans,
-            context=self.get_serializer_context(),
-        )
+        response_serializer = TransactionRespondResponseSerializer(trans,context=self.get_serializer_context(),)
         return Response(response_serializer.data)
     
 

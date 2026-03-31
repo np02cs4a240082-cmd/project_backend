@@ -42,7 +42,7 @@ class TransactionCreateRequestSerializer(serializers.ModelSerializer):
             if plan.status != 'PENDING':
                 raise serializers.ValidationError("Plan already completed or canceled.")
 
-            if plan.transaction:
+            if hasattr(plan, 'transaction'):
                 raise serializers.ValidationError("Plan already linked to a transaction.")
 
             return plan
