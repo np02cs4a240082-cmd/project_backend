@@ -14,9 +14,6 @@ INSTALLED_APPS = [
     'sql',
     'api.authentication',
     'api.expenses',
-    'api.user',
-    'api.transaction',
-    'api.paymentplan',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,4 +106,18 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# SWAGGER SETTINGS
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Expenser API',
+    'DESCRIPTION': 'API documentation for Expenser app',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # AUTHOR IS SAMIP REGMI
+    'CONTACT': {
+        'name': 'Samip Regmi',
+        'email': 'samipregmi123456@gmail.com',
+    },
+
 }
