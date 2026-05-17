@@ -1,4 +1,5 @@
 import django_filters
+from datetime import timedelta
 from rest_framework import serializers
 from sql.models import Expense
 
@@ -32,9 +33,13 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
 class ExpenseFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(field_name='date', lookup_expr='gte')
-    end_date = django_filters.DateFilter(field_name='date', lookup_expr='lte')
+    end_date = django_filters.DateFilter(method='filter_end_date')
     min_amount = django_filters.NumberFilter(field_name='amount', lookup_expr='gte')
     max_amount = django_filters.NumberFilter(field_name='amount', lookup_expr='lte')
+
+    def filter_end_date(self, queryset, name, value):
+        # SAMIP REGMI: include the full end date by filtering before the next midnight.
+        return queryset.filter(date__lt=value + timedelta(days=1))
 
     class Meta:
         model = Expense
