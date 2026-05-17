@@ -67,6 +67,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
                 trans.status = 'COMPLETED'
                 Expense.objects.create(user=request.user, type='Expense', amount=trans.amount, category='Request Paid')
                 Expense.objects.create(user=trans.initiator, type='Income', amount=trans.amount, category='Request Received')
+                if trans.payment_plan:
+                    # SAMIP REGMI: keep request-linked plans in sync once the money movement is finalized.
+                    trans.payment_plan.complete_with_transaction(trans)
             
             trans.save()
             
