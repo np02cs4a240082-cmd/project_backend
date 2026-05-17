@@ -15,8 +15,18 @@ class ExpenseSerializer(serializers.ModelSerializer):
     
     def validate(self, data):
         user = self.context['request'].user
-        if data['type'] == 'Expense' and user.balance < data['amount']:
-            raise serializers.ValidationError("Insufficient balance for this expense.")
+        expense_type = data.get('type', getattr(self.instance, 'type', None))
+        amount = data.get('amount', getattr(self.instance, 'amount', None))
+
+        if expense_type == 'Expense':
+            required_amount = amount
+
+            if self.instance and self.instance.type == 'Expense':
+                # SAMIP REGMI: when editing an existing expense, only the extra delta needs new balance.
+                required_amount = amount - self.instance.amount
+
+            if required_amount > 0 and user.balance < required_amount:
+                raise serializers.ValidationError("Insufficient balance for this expense.")
         return data
     
 
